@@ -95,6 +95,7 @@ void reset()
   {
     CURRENT_STATE.REGS[i] = 0;
   }
+  INSTRUCTION_COUNT = 0;
   RUN_BIT = TRUE;
 }
 
@@ -154,6 +155,12 @@ void cycle() {
   process_instruction();
   CURRENT_STATE = NEXT_STATE;
   INSTRUCTION_COUNT++;
+
+  if (INSTRUCTION_COUNT >= 1000)
+  {
+    CURRENT_STATE.REGS[15] = 0xffffffff;
+    RUN_BIT = FALSE;
+  }
 }
 
 /***************************************************************/
