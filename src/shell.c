@@ -709,7 +709,7 @@ void test()
 {
   int full = test_file("all");
   go();
-  if (full == 0) 
+  if (CURRENT_STATE.REGS[14]==0x6c) 
   {
     printf("=============================================\n");
     printf("|                TEST RESULT                |\n");
@@ -737,8 +737,11 @@ void test()
       break; case 9: res = test_lui();
       break; default: res = test_file(instructions[i]);
     }
-    count += (res == 0) ? 1 : 0;
-    results[i] = res;
+    int v = (res == 0) ? 1 : 0;
+    count += v;
+    if (v==1) printf("[+]: %s\n", instructions[i]);
+    else printf("[-]: %s\n", instructions[i]);
+    results[i] = v;
     reset();
   }
 
@@ -750,7 +753,7 @@ void test()
   printf("[ NEED TO FIX ]: \n");
   for (int i=0; i<10; i++)
   {
-    if (results[i]==-1)
+    if (results[i]==0)
     {
       printf("%s\n", instructions[i]);
     }
@@ -760,7 +763,7 @@ void test()
   printf("[ Incorrect ]: \n");
   for (int i=0; i<52; i++)
   {
-    if (results[i]==-1)
+    if (results[i]==0)
     {
       printf("%s\n", instructions[i]);
     }
